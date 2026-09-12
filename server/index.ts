@@ -10,6 +10,7 @@ import {z,ZodError} from 'zod';
 import {db,demo,hash,safeEqual,signature,razor,serial,settle,deliverEmails} from './services';
 import {quote,nextStatuses,reservationWindow,recommend} from '../shared/core.mjs';
 const app=express();
+app.set('trust proxy',1);
 const origin=process.env.APP_ORIGIN || 'http://localhost:5173';
 const asyncRoute=(fn:(req:Request,res:Response)=>Promise<any>)=>(req:Request,res:Response,next:NextFunction)=>Promise.resolve(fn(req,res)).catch(next);
 const publicUser={id:true,email:true,name:true,role:true,points:true} as const;
