@@ -1,0 +1,2 @@
+export async function api<T=any>(path:string,method='GET',data?:unknown):Promise<T>{const response=await fetch('/api'+path,{method,credentials:'include',headers:{'Content-Type':'application/json','X-Requested-With':'ember'},body:data===undefined?undefined:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(result.error||'Something went wrong. Please try again.');return result;}
+export const money=(paise:number)=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(paise/100);
