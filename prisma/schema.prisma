@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+model User {
+  id String @id @default(cuid())
+  email String @unique
+  name String
+  password String
+  role String @default("CUSTOMER")
+  points Int @default(0)
+  createdAt DateTime @default(now())
+  sessions Session[]
+  orders Order[]
+  reservations Reservation[]
+  favorites Favorite[]
+  reviews Review[]
+  notifications Notification[]
+  addresses Address[]
+  resets PasswordReset[]
+  chatMessages ChatMessage[]
+}
+model ChatMessage {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role String
+  text String
+  createdAt DateTime @default(now())
+  @@index([userId, createdAt])
+}
+model Session {
+  tokenHash String @id
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  @@index([expiresAt])
+}
+model PasswordReset {
+  tokenHash String @id
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+}
+model Category {
+  name String @id
+  items MenuItem[]
+}
+model MenuItem {
+  id String @id @default(cuid())
+  name String
+  description String
+  category String
+  categoryRef Category @relation(fields: [category], references: [name])
+  price Int
+  image String
+  veg Boolean @default(true)
+  available Boolean @default(true)
+  featured Boolean @default(false)
+  calories Int @default(0)
+  allergens String[]
+  ingredients String[]
+  spice Int @default(0)
+  prepMinutes Int @default(20)
+  options Json @default("[]")
+  favorites Favorite[]
+  reviews Review[]
+  @@index([category, available])
+}
+model Order {
+  id String @id @default(cuid())
+  requestKey String @unique
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  type String
+  customer Json
+  address Json
+  status String @default("PENDING")
+  paymentStatus String @default("PENDING")
+  subtotal Int
+  tax Int
+  delivery Int
+  packaging Int
+  discount Int
+  total Int
+  couponCode String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lines OrderItem[]
+  payments Payment[]
+  reviews Review[]
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+model OrderItem {
+  id String @id @default(cuid())
+  orderId String
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  itemId String
+  name String
+  quantity Int
+  unitPrice Int
+  options Json
+  notes String
+}
+model Payment {
+  id String @id @default(cuid())
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
+  provider String
+  providerOrderId String? @unique
+  providerPaymentId String? @unique
+  amount Int
+  status String @default("PENDING")
+  createdAt DateTime @default(now())
+}
+model DiningTable {
+  id String @id
+  seats Int
+  area String
+  reservations Reservation[]
+}
+model Reservation {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  tableId String
+  table DiningTable @relation(fields: [tableId], references: [id])
+  startsAt DateTime
+  endsAt DateTime
+  guests Int
+  name String
+  phone String
+  email String
+  request String
+  status String @default("CONFIRMED")
+  createdAt DateTime @default(now())
+  @@index([tableId, startsAt, endsAt])
+  @@index([userId, startsAt])
+}
+model Favorite {
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId String
+  item MenuItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  @@id([userId, itemId])
+}
+model Review {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  itemId String
+  item MenuItem @relation(fields: [itemId], references: [id])
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
+  rating Int
+  text String
+  approved Boolean @default(false)
+  createdAt DateTime @default(now())
+  @@unique([userId, itemId, orderId])
+}
+model Coupon {
+  code String @id
+  kind String @default("PERCENT")
+  value Int
+  minimum Int @default(0)
+  maximum Int @default(100000)
+  expiresAt DateTime
+  limit Int @default(100)
+  used Int @default(0)
+  active Boolean @default(true)
+}
+model Notification {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  subject String
+  text String
+  emailState String @default("QUEUED")
+  attempts Int @default(0)
+  createdAt DateTime @default(now())
+  @@index([emailState, createdAt])
+}
+model Address {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label String
+  details Json
+}
+model Restaurant {
+  id String @id @default("main")
+  name String @default("Ember & Table")
+  address String @default("Demo venue, Bandra West, Mumbai")
+  phone String @default("")
+  email String @default("hello@example.test")
+  hours String @default("Daily, 12:00 - 23:00 IST")
+  delivery Int @default(4900)
+  packaging Int @default(1900)
+  taxBasisPoints Int @default(500)
+  minimum Int @default(15000)
+  pinCodes String[] @default(["400050", "400051", "400052"])
+}
+model ContactMessage {
+  id String @id @default(cuid())
+  email String
+  name String
+  message String
+  createdAt DateTime @default(now())
+}
+model Subscriber {
+  email String @id
+  createdAt DateTime @default(now())
+}
