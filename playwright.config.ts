@@ -1,0 +1,2 @@
+import {defineConfig,devices} from '@playwright/test';
+export default defineConfig({testDir:'./e2e',use:{baseURL:'http://localhost:5173',trace:'retain-on-failure'},webServer:{command:'npm run dev',url:'http://localhost:5173',reuseExistingServer:!process.env.CI},projects:[{name:'desktop',use:{...devices['Desktop Chrome']}},{name:'mobile',use:{viewport:{width:375,height:812}}},{name:'tablet',use:{viewport:{width:768,height:1024}}},{name:'laptop',use:{viewport:{width:1024,height:768}}},{name:'wide',use:{viewport:{width:1440,height:900}}}]});

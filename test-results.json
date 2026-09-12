@@ -1,0 +1,122 @@
+{
+  "passed": 29,
+  "failed": 0,
+  "results": [
+    {
+      "name": "server prices options, discount, tax and delivery in integer paise",
+      "passed": true
+    },
+    {
+      "name": "pickup has no delivery charge",
+      "passed": true
+    },
+    {
+      "name": "duplicate option identifiers are charged once",
+      "passed": true
+    },
+    {
+      "name": "unavailable food is rejected",
+      "passed": true
+    },
+    {
+      "name": "unknown item rejected",
+      "passed": true
+    },
+    {
+      "name": "tampered price ignored",
+      "passed": true
+    },
+    {
+      "name": "unknown option rejected",
+      "passed": true
+    },
+    {
+      "name": "quantity bounds enforced",
+      "passed": true
+    },
+    {
+      "name": "expired coupon rejected",
+      "passed": true
+    },
+    {
+      "name": "coupon usage exhausted",
+      "passed": true
+    },
+    {
+      "name": "fixed discounts cannot make total negative",
+      "passed": true
+    },
+    {
+      "name": "minimum order enforced",
+      "passed": true
+    },
+    {
+      "name": "delivery transition cannot skip kitchen",
+      "passed": true
+    },
+    {
+      "name": "pickup skips driver status",
+      "passed": true
+    },
+    {
+      "name": "terminal statuses cannot advance",
+      "passed": true
+    },
+    {
+      "name": "overlapping bookings conflict",
+      "passed": true
+    },
+    {
+      "name": "adjacent bookings do not conflict",
+      "passed": true
+    },
+    {
+      "name": "reservation uses IST and 90 minutes",
+      "passed": true
+    },
+    {
+      "name": "past and out of hours bookings rejected",
+      "passed": true
+    },
+    {
+      "name": "empty carts rejected",
+      "passed": true
+    },
+    {
+      "name": "grounded concierge never invents prices",
+      "passed": true
+    },
+    {
+      "name": "unmatched budget has no recommendations",
+      "passed": true
+    },
+    {
+      "name": "impossible calendar days are rejected",
+      "passed": true
+    },
+    {
+      "name": "session cookie protections present",
+      "passed": true
+    },
+    {
+      "name": "server origin gate present",
+      "passed": true
+    },
+    {
+      "name": "reservation concurrency guard present",
+      "passed": true
+    },
+    {
+      "name": "admin settings and refund routes require administrator",
+      "passed": true
+    },
+    {
+      "name": "private reads scope to current customer",
+      "passed": true
+    },
+    {
+      "name": "session middleware explicitly continues",
+      "passed": true
+    }
+  ]
+}
